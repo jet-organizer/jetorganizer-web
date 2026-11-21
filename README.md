@@ -45,6 +45,21 @@ Por ejemplo, al migrar el listado de aviones, su ruta puede cargar los datos ini
 
 En `home`, la demo usa el estado de apertura que ya ofrece el diálogo de HeroUI, por lo que solo necesita `views/`.
 
+## Git Flow
+
+`main` contiene las versiones de producción y `develop` integra los cambios para la próxima versión.
+
+Al clonar el repositorio, con el comando `git flow` instalado, ejecuta `git flow init` y elige `main` para producción, `develop` para integración y los prefijos indicados abajo. Repite la inicialización en cada clon porque la configuración se guarda en `.git/config`.
+
+| Rama | Parte de | Uso |
+| --- | --- | --- |
+| `feature/` | `develop` | Desarrollar cambios que se integran en `develop`. |
+| `release/` | `develop` | Preparar una versión para `main` e incorporar los ajustes en `develop`. |
+| `hotfix/` | `main` | Corregir producción e incorporar la corrección en `develop`. |
+| `support/` | `main` o un tag de versión | Mantener una versión anterior. |
+
+Para empezar una funcionalidad, usa `git flow feature start <nombre>`.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
