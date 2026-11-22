@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { dashboardSections } from "@/features/dashboard/navigation";
+import { AccountSettings } from "@/features/auth/views/account-settings";
+import { dashboardSections, dashboardSettings } from "@/features/dashboard/navigation";
 import { DashboardSectionView } from "@/features/dashboard/views/dashboard-section-view";
 
 type SectionPageProps = { params: Promise<{ section: string[] }> };
@@ -18,7 +19,11 @@ async function SectionContent({ params }: SectionPageProps) {
     notFound();
   }
 
-  return <DashboardSectionView title={item.title ?? item.label} />;
+  return (
+    <DashboardSectionView title={item.title ?? item.label}>
+      {href === dashboardSettings.href ? <AccountSettings /> : undefined}
+    </DashboardSectionView>
+  );
 }
 
 export default function DashboardSectionPage({ params }: SectionPageProps) {

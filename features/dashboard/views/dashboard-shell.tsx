@@ -1,17 +1,26 @@
 "use client";
 
-import { LogIn } from "lucide-react";
-import Link from "next/link";
+import { Button, Popover } from "@heroui/react";
+import { CircleHelp, House } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { Suspense, useState, type ReactNode } from "react";
+import { dashboardLinks } from "@/features/dashboard/navigation";
 import { DashboardSidebar } from "./dashboard-sidebar";
 
-type DashboardShellProps = {
-  children: ReactNode;
-  accountControl?: ReactNode;
-  isPreview?: boolean;
-};
+function DashboardTopbarTitle() {
+  const pathname = usePathname();
+  const section = dashboardLinks.find(({ href }) => href === pathname);
+  const Icon = section?.icon ?? House;
 
-export function DashboardShell({ children, accountControl, isPreview }: DashboardShellProps) {
+  return (
+    <p className="flex min-w-0 items-center gap-2.5 text-[15px] font-medium text-neutral-900">
+      <Icon aria-hidden="true" className="size-4 shrink-0" strokeWidth={1.75} />
+      <span className="truncate">{section?.title ?? section?.label ?? "Dashboard"}</span>
+    </p>
+  );
+}
+
+export function DashboardShell({ children }: { children: ReactNode }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
@@ -24,19 +33,30 @@ export function DashboardShell({ children, accountControl, isPreview }: Dashboar
       </Suspense>
 
       <div className="min-w-0 md:col-start-2">
-        <header className="flex min-h-16 items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 sm:px-8">
-          <p className="text-sm font-medium text-slate-600">Dashboard</p>
-          {isPreview ? (
-            <Link
-              href="/auth"
-              className="inline-flex min-h-9 items-center gap-2 rounded-lg px-2 text-sm font-medium text-blue-800 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+        <header className="flex h-[48px] items-center gap-3 border-b border-slate-200 bg-white px-4">
+          <Suspense fallback={null}>
+            <DashboardTopbarTitle />
+          </Suspense>
+          <Popover>
+            <Button
+              isIconOnly
+              size="sm"
+              variant="ghost"
+              aria-label="Help"
+              className="ml-auto shrink-0 text-neutral-700"
             >
-              <LogIn aria-hidden="true" className="size-4" />
-              Back to sign in
-            </Link>
-          ) : (
-            accountControl
-          )}
+              <CircleHelp aria-hidden="true" className="size-[18px]" strokeWidth={1.75} />
+            </Button>
+            <Popover.Content placement="bottom end" className="max-w-64">
+              <Popover.Dialog>
+                <Popover.Heading>Help</Popover.Heading>
+                <p className="mt-2 text-sm text-muted">
+                  Use Search to find a dashboard section. Press <kbd>⌘ K</kbd> on Mac or{" "}
+                  <kbd>Ctrl K</kbd> on Windows.
+                </p>
+              </Popover.Dialog>
+            </Popover.Content>
+          </Popover>
         </header>
 
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-8 sm:py-8">{children}</main>

@@ -1,4 +1,3 @@
-import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { Spinner } from "@heroui/react";
 import type { Metadata } from "next";
@@ -16,13 +15,13 @@ async function AuthenticatedDashboard({ children }: { children: ReactNode }) {
     redirect("/auth");
   }
 
-  return <DashboardShell accountControl={<UserButton />}>{children}</DashboardShell>;
+  return <DashboardShell>{children}</DashboardShell>;
 }
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   if (!hasClerkCredentials()) {
     if (process.env.NODE_ENV === "development") {
-      return <DashboardShell isPreview>{children}</DashboardShell>;
+      return <DashboardShell>{children}</DashboardShell>;
     }
 
     redirect("/auth");

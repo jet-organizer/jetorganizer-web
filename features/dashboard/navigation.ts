@@ -77,7 +77,11 @@ export const dashboardSettings = { label: "Settings", href: "/dashboard/settings
 
 export const dashboardLinks: DashboardLink[] = [
   ...dashboardNavigation.flatMap(({ items }) =>
-    items.flatMap((item) => ("children" in item ? item.children : [item])),
+    items.flatMap((item) =>
+      "children" in item
+        ? item.children.map((child) => ({ ...child, icon: child.icon ?? item.icon }))
+        : [item],
+    ),
   ),
   dashboardSettings,
 ];
