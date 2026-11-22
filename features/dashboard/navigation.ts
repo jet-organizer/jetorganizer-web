@@ -8,6 +8,7 @@ import {
   House,
   Plane,
   Send,
+  Settings,
   Store,
   Users,
   Wallet,
@@ -72,8 +73,13 @@ export const dashboardNavigation: DashboardGroup[] = [
   },
 ];
 
-export const dashboardLinks = dashboardNavigation
-  .flatMap(({ items }) => items)
-  .flatMap((item) => ("children" in item ? item.children : [item]));
+export const dashboardSettings = { label: "Settings", href: "/dashboard/settings", icon: Settings };
+
+export const dashboardLinks: DashboardLink[] = [
+  ...dashboardNavigation.flatMap(({ items }) =>
+    items.flatMap((item) => ("children" in item ? item.children : [item])),
+  ),
+  dashboardSettings,
+];
 
 export const dashboardSections = dashboardLinks.filter(({ href }) => href !== "/dashboard");
