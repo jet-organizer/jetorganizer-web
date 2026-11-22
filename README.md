@@ -24,6 +24,12 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 En desarrollo, si faltan las claves, `/auth` muestra un enlace para previsualizar el dashboard vacío. En producción, el dashboard requiere una sesión de Clerk. La demo de HeroUI está disponible en `/demo`.
 
+## Base de datos de Supabase
+
+Configura `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY` en `.env.local` siguiendo [`.env.example`](.env.example). El cliente de servidor en `shared/supabase/server.ts` usa la sesión de Clerk para las consultas de cada usuario. Para habilitarlas, configura la integración de Clerk como proveedor externo en el proyecto de Supabase. [Guía de integración de Clerk](https://supabase.com/docs/guides/auth/third-party/clerk)
+
+Con la CLI autenticada, usa `supabase link --project-ref <ref>` para enlazar el proyecto y `supabase migration new <nombre>` para crear cada migración en `supabase/migrations/`. Versiona las migraciones con el código. Habilita RLS en las tablas expuestas y concede acceso explícitamente a los roles que lo necesiten. [Guía de migraciones](https://supabase.com/docs/guides/local-development/database-migrations)
+
 ## Arquitectura MVVM
 
 `app/` contiene las rutas y archivos especiales de Next.js. Cada ruta compone la vista de su funcionalidad y puede cargar sus datos iniciales en el servidor. El código de cada funcionalidad vive en `features/`.
