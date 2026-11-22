@@ -15,7 +15,7 @@ function DashboardTopbarTitle() {
   return (
     <p className="flex min-w-0 items-center gap-2.5 text-[15px] font-medium text-neutral-900">
       <Icon aria-hidden="true" className="size-4 shrink-0" strokeWidth={1.75} />
-      <span className="truncate">{section?.title ?? section?.label ?? "Dashboard"}</span>
+      <span className="truncate">{section?.title ?? section?.label ?? "Inicio"}</span>
     </p>
   );
 }
@@ -24,7 +24,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div className="min-h-dvh bg-slate-50 font-sans text-slate-950 md:grid md:grid-cols-[auto_minmax(0,1fr)]">
+    <div className="min-h-dvh bg-[#FFFFFF] font-sans text-slate-950 md:grid md:grid-cols-[auto_minmax(0,1fr)]">
       <Suspense fallback={null}>
         <DashboardSidebar
           collapsed={sidebarCollapsed}
@@ -33,7 +33,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
       </Suspense>
 
       <div className="min-w-0 md:col-start-2">
-        <header className="flex h-[48px] items-center gap-3 border-b border-slate-200 bg-white px-4">
+        <header className="flex h-[48px] items-center gap-3 border-b border-slate-200 bg-[#FFFFFF] px-4">
           <Suspense fallback={null}>
             <DashboardTopbarTitle />
           </Suspense>

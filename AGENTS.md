@@ -14,3 +14,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - La versión actual está operativa en Bubble.io y sus datos residen en la base de datos de Bubble.
 - El proyecto consiste en migrar la aplicación de Bubble a Next.js y crear una base de datos para la nueva versión. Supabase es una opción por evaluar.
 - El plan contempla usar Clerk para la autenticación de usuarios.
+- La dirección del producto es convertir JetOrganizer en una aplicación agéntica. La pantalla de Inicio será el punto de entrada al asistente para gestionar las operaciones.
+
+## Regla de interfaz
+
+- Usa siempre componentes de HeroUI v3 (`@heroui/react`) para la interfaz. Consulta su documentación v3 antes de implementarlos.

@@ -31,7 +31,7 @@ export const dashboardNavigation: DashboardGroup[] = [
   {
     label: "General",
     items: [
-      { label: "Dashboard", href: "/dashboard", icon: House },
+      { label: "Inicio", href: "/dashboard", icon: House },
       { label: "Scheduling", href: "/dashboard/scheduling", icon: CalendarDays },
     ],
   },
