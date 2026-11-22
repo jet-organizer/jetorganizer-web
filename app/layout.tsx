@@ -1,5 +1,7 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { hasClerkCredentials } from "@/features/auth/models/clerk-config";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,16 +16,24 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "JetOrganizer",
-  description: "Prueba de componentes HeroUI v3 en JetOrganizer.",
+  description: "Private aircraft operations and fleet management.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="es"
+      lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {hasClerkCredentials() ? (
+          <ClerkProvider signInUrl="/auth" afterSignOutUrl="/auth">
+            {children}
+          </ClerkProvider>
+        ) : (
+          children
+        )}
+      </body>
     </html>
   );
 }

@@ -18,18 +18,24 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Acceso al dashboard
+
+`/` dirige a `/auth`. Para habilitar el inicio de sesión con Clerk, configura `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` y `CLERK_SECRET_KEY` en `.env.local`. El flujo de acceso dirige a `/dashboard` tras iniciar sesión.
+
+En desarrollo, si faltan las claves, `/auth` muestra un enlace para previsualizar el dashboard vacío. En producción, el dashboard requiere una sesión de Clerk. La demo de HeroUI está disponible en `/demo`.
+
 ## Arquitectura MVVM
 
 `app/` contiene las rutas y archivos especiales de Next.js. Cada ruta compone la vista de su funcionalidad y puede cargar sus datos iniciales en el servidor. El código de cada funcionalidad vive en `features/`.
 
 ```text
 app/
-  page.tsx                          # Ruta /
+  page.tsx                          # Redirección a /auth
   layout.tsx                        # Layout raíz
 features/
   home/
     views/
-      home-view.tsx                 # Pantalla de inicio
+      home-view.tsx                 # Pantalla de la demo
       hero-ui-demo.tsx              # Componente interactivo de HeroUI
 ```
 
