@@ -8,6 +8,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { dashboardNavigation, dashboardSettings } from "@/features/dashboard/navigation";
 import { Brand } from "@/shared/ui/brand";
 import { DashboardSearch } from "./dashboard-search";
+import { SidebarTooltip } from "./sidebar-tooltip";
 
 const menuItemClass =
   "flex min-h-10 items-center gap-2.5 overflow-hidden rounded-lg px-2.5 text-[15px] leading-5 font-medium text-neutral-900 transition-colors hover:bg-neutral-200/45 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-neutral-600 aria-[current=page]:bg-[#EDEDED] md:min-h-8 md:px-[13px]";
@@ -50,29 +51,30 @@ function SidebarSubmenu({
 
   return (
     <>
-      <button
-        type="button"
-        aria-expanded={isExpanded}
-        aria-controls={panelId}
-        title={sidebarCollapsed ? label : undefined}
-        className={`${menuItemClass} group w-full cursor-pointer text-left`}
-        onClick={() => {
-          if (sidebarCollapsed) {
-            onExpandSidebar();
-            setIsOpen(true);
-          } else {
-            setIsOpen((open) => !open);
-          }
-        }}
-      >
-        {icon}
-        <span className={sidebarLabelClass}>{label}</span>
-        <ChevronRight
-          aria-hidden="true"
-          className="ml-auto size-3.5 shrink-0 text-neutral-500 group-aria-expanded:rotate-90 md:group-data-[collapsed=true]/sidebar:opacity-0 motion-safe:transition-[rotate,opacity] motion-safe:duration-[220ms] motion-safe:ease-in-out"
-          strokeWidth={1.75}
-        />
-      </button>
+      <SidebarTooltip enabled={sidebarCollapsed} label={label}>
+        <button
+          type="button"
+          aria-expanded={isExpanded}
+          aria-controls={panelId}
+          className={`${menuItemClass} group w-full cursor-pointer text-left`}
+          onClick={() => {
+            if (sidebarCollapsed) {
+              onExpandSidebar();
+              setIsOpen(true);
+            } else {
+              setIsOpen((open) => !open);
+            }
+          }}
+        >
+          {icon}
+          <span className={sidebarLabelClass}>{label}</span>
+          <ChevronRight
+            aria-hidden="true"
+            className="ml-auto size-3.5 shrink-0 text-neutral-500 group-aria-expanded:rotate-90 md:group-data-[collapsed=true]/sidebar:opacity-0 motion-safe:transition-[rotate,opacity] motion-safe:duration-[220ms] motion-safe:ease-in-out"
+            strokeWidth={1.75}
+          />
+        </button>
+      </SidebarTooltip>
 
       <div
         id={panelId}
@@ -113,18 +115,20 @@ export function DashboardSidebar({
         <div className={`${sidebarLabelClass} md:pointer-events-none md:absolute md:left-1.5`}>
           <Brand compact />
         </div>
-        <Button
-          isIconOnly
-          size="sm"
-          variant="ghost"
-          aria-label={collapseLabel}
-          aria-expanded={!collapsed}
-          aria-controls="dashboard-navigation"
-          className="relative hidden shrink-0 text-neutral-600 md:inline-flex"
-          onPress={() => onCollapsedChange(!collapsed)}
-        >
-          <CollapseIcon aria-hidden="true" className="size-[17px]" strokeWidth={1.75} />
-        </Button>
+        <SidebarTooltip enabled={collapsed} label={collapseLabel} nativeTrigger={false}>
+          <Button
+            isIconOnly
+            size="sm"
+            variant="ghost"
+            aria-label={collapseLabel}
+            aria-expanded={!collapsed}
+            aria-controls="dashboard-navigation"
+            className="relative hidden shrink-0 text-neutral-600 md:inline-flex"
+            onPress={() => onCollapsedChange(!collapsed)}
+          >
+            <CollapseIcon aria-hidden="true" className="size-[17px]" strokeWidth={1.75} />
+          </Button>
+        </SidebarTooltip>
         <Button
           isIconOnly
           variant="ghost"
@@ -147,7 +151,7 @@ export function DashboardSidebar({
         className={`${menuOpen ? "flex" : "hidden"} flex-col pt-4 md:flex md:min-h-0 md:flex-1 md:pt-0`}
       >
         <div className="space-y-4 md:min-h-0 md:flex-1 md:overflow-x-hidden md:overflow-y-auto md:pb-3">
-          <DashboardSearch onNavigate={() => setMenuOpen(false)} />
+          <DashboardSearch compact={collapsed} onNavigate={() => setMenuOpen(false)} />
           {dashboardNavigation.map(({ label, items }) => (
             <div key={label}>
               <p className="mb-1 h-4 overflow-hidden px-2.5 text-[11px] leading-4 font-semibold tracking-wide text-neutral-500 uppercase md:group-data-[collapsed=true]/sidebar:h-0 md:group-data-[collapsed=true]/sidebar:opacity-0 motion-safe:md:transition-[height,opacity] motion-safe:md:duration-[220ms] motion-safe:md:ease-in-out">
@@ -177,16 +181,17 @@ export function DashboardSidebar({
                         ))}
                       </SidebarSubmenu>
                     ) : (
-                      <Link
-                        href={item.href}
-                        aria-current={pathname === item.href ? "page" : undefined}
-                        title={collapsed ? item.label : undefined}
-                        className={menuItemClass}
-                        onNavigate={() => setMenuOpen(false)}
-                      >
-                        {Icon && <Icon aria-hidden="true" className={menuIconClass} strokeWidth={1.75} />}
-                        <span className={sidebarLabelClass}>{item.label}</span>
-                      </Link>
+                      <SidebarTooltip enabled={collapsed} label={item.label}>
+                        <Link
+                          href={item.href}
+                          aria-current={pathname === item.href ? "page" : undefined}
+                          className={menuItemClass}
+                          onNavigate={() => setMenuOpen(false)}
+                        >
+                          {Icon && <Icon aria-hidden="true" className={menuIconClass} strokeWidth={1.75} />}
+                          <span className={sidebarLabelClass}>{item.label}</span>
+                        </Link>
+                      </SidebarTooltip>
                     )}
                   </li>
                 ))}
@@ -195,16 +200,17 @@ export function DashboardSidebar({
           ))}
         </div>
         <div className="-mx-3 mt-4 shrink-0 border-t border-neutral-200 px-3 pt-2 md:-mx-2.5 md:mt-0 md:px-2.5">
-          <Link
-            href={settingsHref}
-            aria-current={pathname === settingsHref ? "page" : undefined}
-            title={collapsed ? settingsLabel : undefined}
-            className={menuItemClass}
-            onNavigate={() => setMenuOpen(false)}
-          >
-            <SettingsIcon aria-hidden="true" className={menuIconClass} strokeWidth={1.75} />
-            <span className={sidebarLabelClass}>{settingsLabel}</span>
-          </Link>
+          <SidebarTooltip enabled={collapsed} label={settingsLabel}>
+            <Link
+              href={settingsHref}
+              aria-current={pathname === settingsHref ? "page" : undefined}
+              className={menuItemClass}
+              onNavigate={() => setMenuOpen(false)}
+            >
+              <SettingsIcon aria-hidden="true" className={menuIconClass} strokeWidth={1.75} />
+              <span className={sidebarLabelClass}>{settingsLabel}</span>
+            </Link>
+          </SidebarTooltip>
         </div>
       </nav>
     </aside>
