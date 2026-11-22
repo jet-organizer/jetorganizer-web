@@ -72,7 +72,8 @@ export const dashboardNavigation: DashboardGroup[] = [
   },
 ];
 
-export const dashboardSections = dashboardNavigation
+export const dashboardLinks = dashboardNavigation
   .flatMap(({ items }) => items)
-  .flatMap((item) => ("children" in item ? item.children : [item]))
-  .filter(({ href }) => href !== "/dashboard");
+  .flatMap((item) => ("children" in item ? item.children : [item]));
+
+export const dashboardSections = dashboardLinks.filter(({ href }) => href !== "/dashboard");

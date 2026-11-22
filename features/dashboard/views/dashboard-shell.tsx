@@ -1,6 +1,8 @@
+"use client";
+
 import { LogIn } from "lucide-react";
 import Link from "next/link";
-import { Suspense, type ReactNode } from "react";
+import { Suspense, useState, type ReactNode } from "react";
 import { DashboardSidebar } from "./dashboard-sidebar";
 
 type DashboardShellProps = {
@@ -10,10 +12,15 @@ type DashboardShellProps = {
 };
 
 export function DashboardShell({ children, accountControl, isPreview }: DashboardShellProps) {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   return (
-    <div className="min-h-dvh bg-slate-50 font-sans text-slate-950 md:grid md:grid-cols-[minmax(0,275px)_minmax(0,1fr)]">
+    <div className="min-h-dvh bg-slate-50 font-sans text-slate-950 md:grid md:grid-cols-[auto_minmax(0,1fr)]">
       <Suspense fallback={null}>
-        <DashboardSidebar />
+        <DashboardSidebar
+          collapsed={sidebarCollapsed}
+          onCollapsedChange={setSidebarCollapsed}
+        />
       </Suspense>
 
       <div className="min-w-0 md:col-start-2">
